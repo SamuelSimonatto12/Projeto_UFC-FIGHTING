@@ -14,9 +14,9 @@
       <h2>Login</h2>
 
       <input type="text" class="campo" placeholder="Email" id="InEmail">
-      <p style="display: none; color: red;" id="emailIn">Email Inválido</p>
+      <span style="display: none; color: red;" id="emailIn">Email inválida</span>
       <input type="password" class="campo" placeholder="Senha" id="InSenha">
-      <p style="display: none; color: red;" id="senhaIn">Senha Inválida</p>
+      <span style="display: none; color: red;" id="senhaIn">Senha Inválida</span>
       <button type="button" class="botao" onclick="logar()">Entrar</button>
       <div id="div_mensagem"></div>
       <p class="link-cadastro">
@@ -28,43 +28,30 @@
 </body>
 
 </html>
+<script src="js/validacoes.js"></script>
 <script>
   function logar() {
     let email = InEmail.value;
     let senha = InSenha.value;
-    let posArroba = email.indexOf('@');
-    let posCom = email.indexOf('.com');
 
-    if (email == '') {
+    if (!validarEmail(email)) {
       InEmail.style.border = "solid red 3px";
       emailIn.style.display = "block";
+      
       return;
-    } else {
+    }else{
       InEmail.style.border = "none";
       emailIn.style.display = "none";
     }
-
-    if (
-      posArroba <= 0 ||
-      posCom <= posArroba + 1 ||
-      posCom != email.length - 4
-    ) {
-      InEmail.style.border = "solid red 3px";
-      emailIn.style.display = "block";
-      return;
-    } else {
-      InEmail.style.border = "none";
-      emailIn.style.display = "none";
-    }
-
-    if (senha == '' || senha.length < 6) {
+     if (!validarSenha(senha)) {
       InSenha.style.border = "solid red 3px";
-      senhaIn.style.display = "block";
+      senhaIn.style.display = "block"
       return;
-    } else {
+    }else {
       InSenha.style.border = "none";
-      senhaIn.style.display = "none";
+      senhaIn.style.display = "none"
     }
+
 
     fetch("/usuarios/autenticar", {
       method: "POST",

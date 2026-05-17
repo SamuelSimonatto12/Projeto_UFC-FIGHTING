@@ -31,111 +31,70 @@
 </body>
 
 </html>
+<script src="js/validacoes.js"></script>
+<script src="js/validacoes.js"></script>
+
 <script>
-  function cadastrar() {
+
+function cadastrar() {
+
     let nome = InNome.value;
     let email = InEmail.value;
     let senha = InSenha.value;
 
 
-
-    let posArroba = email.indexOf('@');
-    let posCom = email.indexOf('.com');
-
-    if (nome == '') {
-      InNome.style.border = "solid red 3px";
-      nomeIn.style.display = "block"
-      return;
-    } else {
-      InNome.style.border = "none"
-      nomeIn.style.display = "none"
+    if (!validarNome(nome)) {
+        alert("Nome inválido");
+        return;
     }
 
-    if (email == '') {
-      InEmail.style.border = "solid red 3px";
-      emailIn.style.display = "block"
-      return;
-    } else {
-      InEmail.style.border = "none";
-      emailIn.style.display = "none";
+    if (!validarEmail(email)) {
+        alert("Email inválido");
+        return;
+    }
+
+    if (!validarSenha(senha)) {
+        alert("Senha inválida");
+        return;
     }
 
 
-    if (
-      posArroba <= 0 ||
-      posCom <= posArroba + 1 ||
-      posCom != email.length - 4
-    ) {
-      InEmail.style.border = "solid red 3px";
-      emailIn.style.display = "block"
-      return;
-    } else {
-      InEmail.style.border = "none";
-      emailIn.style.display = "none";
-    }
+    div_mensagem.innerHTML = "✅ Cadastro realizado!Redirecionando...";
+    div_mensagem.style.color = "green";
 
-    if (senha == '') {
-      InSenha.style.border = "solid red 3px";
-      senhaIn.style.display = "block";
-      return;
-    } else {
-      InSenha.style.border = "none";
-      senhaIn.style.display = "none";
-    }
-
-    if (senha.length < 6) {
-      InSenha.style.border = "solid red 3px";
-      senhaIn.style.display = "block";
-      return;
-    } else {
-      InSenha.style.border = "none";
-      senhaIn.style.display = "none";
-    }
-    div_mensagem.innerHTML = "✅ Cadastro realizado com sucesso! Redirecionando...";
-    div_mensagem.style.color = "green"
-
-    setTimeout(() => {
-      window.location.href = "login.html";
-    },1000);
 
     fetch("/usuarios/cadastrar", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        // crie um atributo que recebe o valor recuperado aqui
-        // Agora vá para o arquivo routes/usuario.js
-        nomeServer: nome,
-        emailServer: email,
-        senhaServer: senha,
-      }),
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            nomeServer: nome,
+            emailServer: email,
+            senhaServer: senha,
+        }),
     })
-      .then(function (resposta) {
+
+    .then(function (resposta) {
+
         console.log("resposta: ", resposta);
 
         if (resposta.ok) {
-          cardErro.style.display = "block";
 
-          mensagem_erro.innerHTML =
-            "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
+            setTimeout(() => {
+                window.location = "login.html";
+            }, 2000);
 
-          setTimeout(() => {
-            window.location = "login.html";
-          }, "2000");
-
-          
         } else {
-          throw "Houve um erro ao tentar realizar o cadastro!";
+            throw "Houve um erro ao tentar realizar o cadastro!";
         }
-      })
-      .catch(function (resposta) {
-        console.log(`#ERRO: ${resposta}`);
-        finalizarAguardar();
-      });
 
-    return false;
-  }
-  
+    })
+
+    .catch(function (erro) {
+        console.log(`#ERRO: ${erro}`);
+    });
+
+}
 
 </script>
