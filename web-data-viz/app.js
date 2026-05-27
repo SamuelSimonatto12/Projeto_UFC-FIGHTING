@@ -19,6 +19,7 @@ var usuarioRouter = require("./src/routes/usuarios");
 var escolhasRouter = require("./src/routes/escolhas");
 var dashboardRouter = require("./src/routes/dash");
 var comparecoesRouter = require("./src/routes/comparacoes");
+var perfilRouter = require("./src/routes/perfil")
 
 
 app.use(express.json());
@@ -31,6 +32,7 @@ app.use("/usuarios", usuarioRouter);
 app.use("/escolhas", escolhasRouter);
 app.use("/dash", dashboardRouter);
 app.use("/comparacoes", comparecoesRouter)
+app.use("/perfil", perfilRouter)
 
 app.listen(PORTA_APP, function () {
     console.log(`

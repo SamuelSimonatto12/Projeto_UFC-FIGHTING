@@ -93,6 +93,7 @@
 
             <div class="vs">VS</div>
 
+
             <div class="card-lutador">
                 <img id="img2">
                 <h3 id="nome2"></h3>
@@ -100,6 +101,8 @@
             </div>
 
         </div>
+
+        <h1 id="resultado"></h1>
 
         <div class="back-groud-cards">
             <div class="linha">
@@ -221,40 +224,70 @@
             img: "img/islam.avif"
         }
     ];
-    function comparar() {
-        let l1 = Number(ipt_lutador1.value);
-        let l2 = Number(ipt_lutador2.value);
+    function trocarImagem() {
 
-        let f1 = lutadores[l1 - 1];
-        let f2 = lutadores[l2 - 1];
+    let l1 = ipt_lutador1.value;
+    let l2 = ipt_lutador2.value;
 
-
-
-        atualizarBarra("forca1", "forca2", f1.forca, f2.forca);
-        atualizarBarra("vel1", "vel2", f1.velocidade, f2.velocidade);
-        atualizarBarra("fin1", "fin2", f1.finalizacao, f2.finalizacao);
-        atualizarBarra("def1", "def2", f1.defesa, f2.defesa);
+    if (l1 == l2) {
+        resultado.innerHTML =
+            "⚠️ Escolha lutadores diferentes!";
+        return;
     }
 
-    function trocarImagem() {
-        let l1 = ipt_lutador1.value;
-        let l2 = ipt_lutador2.value;
+    let f1 = lutadores[l1 - 1];
+    let f2 = lutadores[l2 - 1];
 
-        let f1 = lutadores[l1 - 1];
-        let f2 = lutadores[l2 -1];
+    img1.src = f1.img;
+    img2.src = f2.img;
 
-        img1.src = f1.img;
-        img2.src = f2.img;
+    nome1.innerText = f1.nome;
+    nome2.innerText = f2.nome;
 
-        nome1.innerText = f1.nome;
-        nome2.innerText = f2.nome;
+    info1.innerText = `${f1.vitorias} vitórias - ${f1.derrotas} derrotas`;
+    info2.innerText = `${f2.vitorias} vitórias - ${f2.derrotas} derrotas`;
 
-        info1.innerText = `${f1.vitorias} vitórias - ${f1.derrotas} derrotas`;
-        info2.innerText = `${f2.vitorias} vitórias - ${f2.derrotas} derrotas`;
+    atualizarBarra("forca1", "forca2", f1.forca, f2.forca);
+    atualizarBarra("vel1", "vel2", f1.velocidade, f2.velocidade);
+    atualizarBarra("fin1", "fin2", f1.finalizacao, f2.finalizacao);
+    atualizarBarra("def1", "def2", f1.defesa, f2.defesa);
 
-        comparar()
+    let total1 =
+        f1.forca +
+        f1.velocidade +
+        f1.finalizacao +
+        f1.defesa;
 
-        fetch("/escolhas/cadastrar", {
+    let total2 =
+        f2.forca +
+        f2.velocidade +
+        f2.finalizacao +
+        f2.defesa;
+
+    let vencedor = "";
+
+    if (total1 > total2) {
+
+        vencedor = f1.nome;
+
+        resultado.innerHTML =
+            `🏆 ${f1.nome} venceu a comparação!`;
+
+    } else if (total2 > total1) {
+
+        vencedor = f2.nome;
+
+        resultado.innerHTML =
+            `🏆 ${f2.nome} venceu a comparação!`;
+
+    } else {
+
+        vencedor = "Empate";
+
+        resultado.innerHTML = "🤝 Empate!";
+    }
+
+    fetch("/escolhas/cadastrar", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -262,15 +295,22 @@
         body: JSON.stringify({
             usuarioServer: sessionStorage.ID_USUARIO,
             lutador1Server: l1,
-            lutador2Server: l2
+            lutador2Server: l2,
+            vencedorServer: vencedor,
+            pontos1Server: total1,
+            pontos2Server: total2
         })
     })
-    .then(function(resposta){
+    .then(function (resposta) {
+        if (resposta.ok) {
         console.log("Comparação salva!");
+    } else {
+        console.log("Erro ao salvar!");
+    }
     })
-    .catch(function(erro){
+    .catch(function (erro) {
         console.log(erro);
     });
 }
-    
+
 </script>

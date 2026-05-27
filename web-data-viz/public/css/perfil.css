@@ -3,7 +3,8 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     background-color: #0f0f0f;
     color: white;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .tudo {
@@ -11,6 +12,7 @@ body {
     width: 100vw;
     height: 100vh;
 }
+
 
 
 .sidebar {
@@ -26,17 +28,14 @@ body {
     border-right: 2px solid #d4af37;
 }
 
-
-
-
 .topo-sidebar h1 {
+
+    font-family: 'Fugaz One', sans-serif;
     padding: 10px 20px;
     color: #d4af37;
     font-size: 42px;
     line-height: 45px;
     margin: 0;
-    font-family: 'Fugaz One', sans-serif;
-
 }
 
 .topo-sidebar span {
@@ -71,15 +70,11 @@ body {
     color: #d4af37;
 }
 
-/* LINK ATIVO */
-
 .menu .ativo {
     background-color: #111;
     border-left: 6px solid #d4af37;
     color: #d4af37;
 }
-
-/* BOTÃO SAIR */
 
 .bottom-sidebar {
     padding: 25px;
@@ -108,4 +103,145 @@ body {
 
 .btn-sair:hover {
     background-color: #d4af37;
+}
+
+
+
+.perfil {
+    flex: 1;
+    padding: 35px;
+    box-sizing: border-box;
+    overflow-y: overlay;
+}
+
+
+
+.topo {
+    margin-bottom: 30px;
+}
+
+.topo h2 {
+    margin: 0;
+    font-size: 38px;
+}
+
+.topo p {
+    margin-top: 8px;
+    color: #aaa;
+    font-size: 18px;
+}
+
+
+
+.usuario-card {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    gap: 25px;
+
+    padding: 30px;
+
+    margin-bottom: 30px;
+
+    box-sizing: border-box;
+
+    border-radius: 20px;
+
+    background: linear-gradient(135deg, #1b1b1b, #111);
+
+    border: 1px solid rgba(212, 175, 55, 0.2);
+
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.foto-usuario img {
+    width: 120px;
+    height: 120px;
+
+    border-radius: 50%;
+
+    border: 4px solid #d4af37;
+
+    object-fit: cover;
+}
+
+.info-usuario h2 {
+    margin: 0;
+    font-size: 34px;
+}
+
+.info-usuario p {
+    margin-top: 10px;
+    color: #bbb;
+    font-size: 20px;
+}
+
+
+.cards {
+    display: flex;
+    gap: 25px;
+}
+
+.card {
+    flex: 1;
+
+    background: #1b1b1b;
+
+    border-radius: 18px;
+
+    padding: 30px;
+
+    border: 1px solid rgba(212, 175, 55, 0.2);
+
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+
+    border: 1px solid #d4af37;
+
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+}
+
+.card h3 {
+    margin: 0;
+    margin-bottom: 18px;
+
+    color: #bbb;
+
+    font-size: 18px;
+}
+
+.card span {
+    font-size: 36px;
+    color: #d4af37;
+}
+
+.graficos{
+    width: 100%;
+    margin-top: 30px;
+}
+
+.grafico-card{
+    background-color: #111;
+    border: 1px solid #d4af37;
+    border-radius: 20px;
+    padding: 25px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.grafico-card h3{
+    color: white;
+    font-size: 35px;
+    margin-bottom: 20px;
+}
+
+#graficoVitorias{
+    width: 100%;
+    height: 400px;
 }

@@ -276,3 +276,11 @@ section {
   font-weight: bold;
   color: gold;
 }
+
+#resultado{
+    text-align: center;
+    color: rgb(10, 219, 21);
+    font-size: 40px;
+    margin-top: 20px;
+    font-family: Arial, Helvetica, sans-serif
+}

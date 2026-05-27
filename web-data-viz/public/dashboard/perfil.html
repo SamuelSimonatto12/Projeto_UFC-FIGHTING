@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
@@ -7,17 +7,25 @@
     <title>Perfil</title>
 
     <link rel="stylesheet" href="../css/perfil.css">
+
     <link href="https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
 
 <body>
+
     <div class="tudo">
 
         <aside class="sidebar">
 
             <div class="topo-sidebar">
-                <h1>UFC <span>FIGHTING</span></h1>
+
+                <h1>
+                    UFC <span>FIGHTING</span>
+                </h1>
+
             </div>
 
             <div class="menu">
@@ -45,6 +53,203 @@
             </div>
 
         </aside>
+
+        <main class="perfil">
+
+            <section class="topo">
+
+                <h2>
+                    Perfil do Usuário
+                </h2>
+
+                <p>
+                    Estatísticas pessoais e preferências
+                </p>
+
+            </section>
+
+            <section class="usuario-card">
+
+                <div class="info-usuario">
+
+                    <h2 id="nomeUsuario"></h2>
+
+                    <p id="diasAtivo"></p>
+
+                </div>
+
+            </section>
+
+            <section class="cards">
+
+                <div class="card">
+
+                    <h3>
+                        Lutador Favorito
+                    </h3>
+
+                    <span id="favorito"></span>
+
+                </div>
+
+                <div class="card">
+
+                    <h3>
+                        Total de Comparações
+                    </h3>
+
+                    <span id="totalComparacoes"></span>
+
+                </div>
+
+                <div class="card">
+
+                    <h3>
+                        Mais fã que a comunidade
+                    </h3>
+
+                    <span id="porcentagem"></span>
+
+                </div>
+
+            </section>
+
+            <section class="graficos">
+
+                <div class="grafico-card">
+
+                    <h3>Vitórias dos Lutadores</h3>
+
+                    <canvas id="graficoVitorias"></canvas>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
 </body>
 
 </html>
+
+<script>
+
+    fetch(`/perfil/favorito/${sessionStorage.ID_USUARIO}`)
+
+        .then(function (resposta) {
+
+            if (!resposta.ok) {
+
+                throw new Error("Erro na API");
+
+            }
+
+            return resposta.json();
+
+        })
+
+        .then(function (dados) {
+
+            favorito.innerHTML = dados[0].nome;
+
+            totalComparacoes.innerHTML = dados[0].escolhas;
+
+        })
+
+        .catch(function (erro) {
+
+            console.log("Erro:", erro);
+
+        });
+
+
+    fetch(`/perfil/nomeData/${sessionStorage.ID_USUARIO}`)
+
+        .then(function (resposta) {
+
+            if (!resposta.ok) {
+
+                throw new Error("Erro na API");
+
+            }
+
+            return resposta.json();
+
+        })
+
+        .then(function (dados) {
+
+            nomeUsuario.innerHTML = dados[0].nome;
+
+            diasAtivo.innerHTML =
+                `${dados[0].diasAtivo} dias ativo`;
+
+        })
+
+        .catch(function (erro) {
+
+            console.log("Erro:", erro);
+
+        });
+
+
+    fetch(`/perfil/porcentagem/${sessionStorage.ID_USUARIO}`)
+
+        .then(function (resposta) {
+
+            return resposta.json();
+
+        })
+
+        .then(function (dados) {
+
+            porcentagem.innerHTML =
+                `${dados[0].porcentagem}%`;
+
+        });
+
+
+    fetch("/perfil/vitorias")
+        .then(function (resposta) {
+
+            return resposta.json();
+
+        })
+        .then(function (dados) {
+
+            let nomes = [];
+            let vitorias = [];
+
+            for (let i = 0; i < dados.length; i++) {
+
+                nomes.push(dados[i].vencedor);
+                vitorias.push(dados[i].vitorias);
+
+            }
+
+            const ctx = document.getElementById("graficoVitorias");
+
+            new Chart(ctx, {
+
+                type: "bar",
+
+                data: {
+
+                    labels: nomes,
+
+                    datasets: [{
+                        label: "Vitórias",
+                        data: vitorias,
+                        backgroundColor: "#d4af37",
+                        borderColor: "#d4af37",
+                        borderWidth: 1
+                    }]
+                },
+
+            });
+
+        });
+
+</script>
